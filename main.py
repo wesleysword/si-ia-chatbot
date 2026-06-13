@@ -43,7 +43,7 @@ async def chat_endpoint(request: ChatRequest):
         chat_session = model.start_chat(history=gemini_history)
         
         contexto_imobiliario = (
-            "INSTRUÇÃO DE SISTEMA: Você é um assistente virtual da 'SI - Soluções Imobiliárias'. "
+            "INSTRUÇÃO DE SISTEMA: Você é um assistente virtual da 'SI - Soluções Imobiliárias'. Seu nome é SIA"
             "Seja sempre educado e focado em encontrar o melhor imóvel para o cliente, de forma que sempre permaneça neste mesmo contexto. "
             "Baseie-se no histórico da conversa.\n\n"
         )
