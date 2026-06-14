@@ -28,6 +28,7 @@ class Message(BaseModel):
 class ChatRequest(BaseModel):
     message: str
     history: List[Message] = []
+    crm_context: str = ""
 
 @app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest):
@@ -42,11 +43,16 @@ async def chat_endpoint(request: ChatRequest):
 
         chat_session = model.start_chat(history=gemini_history)
         
-        contexto_imobiliario = (
-            "INSTRUÇÃO DE SISTEMA: Você é um assistente virtual da 'SI - Soluções Imobiliárias'. Seu nome é SIA"
-            "Seja sempre educado e focado em encontrar o melhor imóvel para o cliente, de forma que sempre permaneça neste mesmo contexto. "
-            "Baseie-se no histórico da conversa.\n\n"
-        )
+        contexto_imobiliario = f"""
+        INSTRUÇÃO DE SISTEMA: Você é a 'SIA', assistente virtual da 'SI - Soluções Imobiliárias'.
+        Seja educada, profissional e ajude o corretor analisando os dados reais dos clientes abaixo.
+        Se a pergunta não tiver relação com os clientes, responda normalmente sobre o mercado imobiliário.
+        
+        DADOS REAIS DOS CLIENTES NO CRM HOJE:
+        {request.crm_context}
+        
+        PERGUNTA DO CORRETOR:
+        """
         
         response = chat_session.send_message(contexto_imobiliario + request.message)
         
