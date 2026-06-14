@@ -1,83 +1,46 @@
-# Soluções Imobiliárias - Microsserviço de IA (ChatBot)
+# SI - Microserviço de Inteligência Artificial
 
-Este repositório contém o microsserviço de Inteligência Artificial desenvolvido em Python para atuar como o assistente conversacional da Soluções Imobiliárias. Ele se comunica exclusivamente com o backend (NestJS) e utiliza a API do Google Gemini para interpretar e responder aos leads.
-
----
+Este repositório contém o microserviço dedicado ao processamento de Inteligência Artificial do CRM. Ele opera separadamente do servidor principal, garantindo uma arquitetura escalável (Microservices). Utiliza a API do Google Gemini para atuar como a "SIA", assistente virtual do sistema.
 
 ## Tecnologias Utilizadas
 
-* **Linguagem:** Python 3.11+
-* **Framework Web:** FastAPI
+* **Linguagem:** Python 3
+* **Framework Web:** FastAPI (Alta performance para APIs REST)
 * **Servidor ASGI:** Uvicorn
 * **Inteligência Artificial:** Google Generative AI (Gemini 2.5 Flash)
-* **Gerenciamento de Dados:** Pydantic
-* **Infraestrutura:** Docker
+* **Validação de Dados:** Pydantic
+
+## Funcionalidades
+
+* **Endpoint `/api/chat`:** Recebe requisições POST contendo a pergunta do usuário e o **contexto em tempo real do banco de dados** (injetado via NestJS).
+* **Prompt Engineering Dinâmico:** Constrói um contexto instrucional dinâmico, forçando a IA a analisar exclusivamente os dados imobiliários enviados, gerando respostas altamente precisas e profissionais.
+* **CORS Integrado:** Configurado com middlewares de segurança para aceitar requisições do ecossistema local e de produção.
+
+## Como Executar o Microserviço
+
+1.  **Clone o repositório e acesse a pasta:**
+    ```bash
+    git clone <url-deste-repositorio>
+    cd si-ia-chatbot
+    ```
+
+2.  **Instale as dependências:**
+    ```bash
+    python -m pip install fastapi uvicorn google-generativeai python-dotenv pydantic
+    ```
+
+3.  **Configuração de Variáveis de Ambiente:**
+    Crie um arquivo `.env` na raiz do projeto e adicione sua chave de API do Google Gemini:
+    ```env
+    GEMINI_API_KEY="sua_chave_aqui"
+    ```
+
+4.  **Inicie o servidor FastAPI:**
+    ```bash
+    python -m uvicorn main:app --reload
+    ```
+
+O microserviço de IA iniciará e ficará escutando requisições na porta `http://127.0.0.1:8000`.
 
 ---
-
-## Pré-requisitos e Dependências
-
-Para executar este projeto localmente, é necessário ter:
-
-* [Python 3.11+](https://www.python.org/)
-* [Docker Desktop](https://www.docker.com/products/docker-desktop) (Opcional, para execução via container)
-* Uma chave de API válida do [Google AI Studio](https://aistudio.google.com/)
-
----
-
-## Variáveis de Ambiente
-
-Crie um arquivo `.env` na raiz do projeto e adicione a sua chave de API do Gemini:
-
-```env
-GEMINI_API_KEY=sua_chave_secreta_aqui
-```
-
----
-
-## Passo a Passo para Execução Local
-
-Você pode rodar a aplicação de duas formas: nativamente com Python ou isolada via Docker.
-
-### Execução Nativa (Python + Venv)
-
-**1. Clone o repositório:**
-```bash
-git clone https://github.com/SEU_USUARIO/si-ia-chatbot.git
-cd si-ia-chatbot
-```
-
-**2. Crie e ative o ambiente virtual:**
-* Windows: `python -m venv venv` e depois `venv\Scripts\activate`
-* Linux/Mac: `python3 -m venv venv` e depois `source venv/bin/activate`
-
-**3. Instale as dependências:**
-```bash
-pip install -r requirements.txt
-```
-
-**4. Inicie o servidor:**
-```bash
-uvicorn main:app --reload --port 8000
-```
-
-### Execução via Docker (Recomendado)
-
-**1. Construa a imagem:**
-```bash
-docker build -t si-chatbot-ia .
-```
-
-**2. Rode o container:**
-```bash
-docker run -d -p 8000:8000 --env-file .env --name chatbot_container si-chatbot-ia
-```
-
-O serviço estará disponível em: `http://localhost:8000`. A documentação interativa (Swagger) pode ser acessada em `http://localhost:8000/docs`.
-
----
-
-## Integração com a Aplicação
-
-Este microsserviço não se comunica diretamente com o frontend. 
-O fluxo de dados segue a arquitetura: `Frontend (NextJS) -> Backend (NestJS) -> Microsserviço de IA (FastAPI)`. O endpoint `/api/chat` recebe a nova mensagem do usuário junto com o histórico da conversa, processa o contexto imobiliário e devolve a resposta gerada pelo LLM.
+*Desenvolvido por Wesley - Desenvolvedor Full Stack*
