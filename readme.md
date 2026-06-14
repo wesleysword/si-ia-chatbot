@@ -16,31 +16,43 @@ Este repositório contém o microserviço dedicado ao processamento de Inteligê
 * **Prompt Engineering Dinâmico:** Constrói um contexto instrucional dinâmico, forçando a IA a analisar exclusivamente os dados imobiliários enviados, gerando respostas altamente precisas e profissionais.
 * **CORS Integrado:** Configurado com middlewares de segurança para aceitar requisições do ecossistema local e de produção.
 
-## Como Executar o Microserviço
+## Executando com Docker (Recomendado)
 
-1.  **Clone o repositório e acesse a pasta:**
+1.  **Clone o repositório:**
     ```bash
     git clone <url-deste-repositorio>
     cd si-ia-chatbot
     ```
 
-2.  **Instale as dependências:**
-    ```bash
-    python -m pip install fastapi uvicorn google-generativeai python-dotenv pydantic
-    ```
-
-3.  **Configuração de Variáveis de Ambiente:**
-    Crie um arquivo `.env` na raiz do projeto e adicione sua chave de API do Google Gemini:
+2.  **Configuração da Chave da API:**
+    Crie um arquivo `.env` na raiz do projeto e adicione sua chave do Google Gemini:
     ```env
     GEMINI_API_KEY="sua_chave_aqui"
     ```
 
-4.  **Inicie o servidor FastAPI:**
+3.  **Construa e rode o container:**
     ```bash
-    python -m uvicorn main:app --reload
+    docker build -t si-ia-chatbot .
+    docker run -d -p 8000:8000 --env-file .env --name chatbot si-ia-chatbot
     ```
 
-O microserviço de IA iniciará e ficará escutando requisições na porta `http://127.0.0.1:8000`.
+O microserviço ficará disponível na porta `http://localhost:8000`.
+
+## Executando Localmente (Sem Docker)
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone <url-deste-repositorio>
+    cd si-ia-chatbot
+    ```
+
+2.  **Configuração da Chave da API:**
+    Crie um arquivo `.env` na raiz do projeto e adicione sua chave do Google Gemini:
+    ```env
+    GEMINI_API_KEY="sua_chave_aqui"
+    ```
+3. Instale as bibliotecas: `pip install fastapi uvicorn google-generativeai python-dotenv pydantic`
+4. Inicie o servidor: `python -m uvicorn main:app --reload`
 
 ---
 *Desenvolvido por Wesley - Desenvolvedor Full Stack*
